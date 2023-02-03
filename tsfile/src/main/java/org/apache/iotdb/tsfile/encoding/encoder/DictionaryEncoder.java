@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +70,26 @@ public class DictionaryEncoder extends Encoder {
           return entryIndex.size();
         });
     valuesEncoder.encode(entryIndex.get(value), out);
+  }
+
+  public byte[] longToBytes(long x) {
+    ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+    buffer.putLong(x);
+    return buffer.array();
+  }
+
+
+  @Override
+  public void encode(long value, ByteArrayOutputStream out) {
+    Binary data = new Binary(longToBytes(value));
+    entryIndex.computeIfAbsent(
+            data,
+            (v) -> {
+              indexEntry.add(v);
+              mapSize += v.getLength();
+              return entryIndex.size();
+            });
+    valuesEncoder.encode(entryIndex.get(data), out);
   }
 
   @Override
