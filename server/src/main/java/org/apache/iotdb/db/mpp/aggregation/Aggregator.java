@@ -89,7 +89,6 @@ public class Aggregator {
       QUERY_METRICS.recordExecutionCost(AGGREGATION_FROM_RAW_DATA, System.nanoTime() - startTime);
     }
   }
-
   // Used for AggregateOperator
   public void processTsBlocks(TsBlock[] tsBlock) {
     long startTime = System.nanoTime();

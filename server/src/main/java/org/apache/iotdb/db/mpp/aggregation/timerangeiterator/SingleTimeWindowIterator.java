@@ -21,6 +21,10 @@ package org.apache.iotdb.db.mpp.aggregation.timerangeiterator;
 
 import org.apache.iotdb.tsfile.read.common.TimeRange;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /** Used for aggregation with only one time window. i.e. Aggregation without group by. */
 public class SingleTimeWindowIterator implements ITimeRangeIterator {
 
@@ -75,5 +79,30 @@ public class SingleTimeWindowIterator implements ITimeRangeIterator {
   @Override
   public long getTotalIntervalNum() {
     return 1;
+  }
+
+  @Override
+  public int getFirstRelatedWindowAsTag(long currTimestamp) {
+    return 0;
+  }
+
+  @Override
+  public int getLastRelatedWindowAsTag(long currTimestamp) {
+    return 0;
+  }
+
+  @Override
+  public List<Integer> getRelatedWindowTags(long currTimestamp) {
+    return new ArrayList<>(Collections.singleton(0));
+  }
+
+  @Override
+  public long getWindowStartTimestampByTag(int windowTag) {
+    return startTime;
+  }
+
+  @Override
+  public long getWindowEndTimestampByTag(int windowTag) {
+    return endTime;
   }
 }

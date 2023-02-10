@@ -93,6 +93,19 @@ public class AggregationOperatorTest {
     instanceNotificationExecutor.shutdown();
   }
 
+  public void testAggregatePerformance()
+      throws IllegalPathException, ExecutionException, InterruptedException {
+    List<TAggregationType> aggregationTypes = new ArrayList<>();
+    aggregationTypes.add(TAggregationType.SUM);
+    List<List<InputLocation[]>> inputLocations = new ArrayList<>();
+    for (int i = 0; i < aggregationTypes.size(); i++) {
+      List<InputLocation[]> inputLocationForOneAggregator = new ArrayList<>();
+      inputLocationForOneAggregator.add(new InputLocation[] {new InputLocation(0, i)});
+      inputLocationForOneAggregator.add(new InputLocation[] {new InputLocation(1, i)});
+      inputLocations.add(inputLocationForOneAggregator);
+    }
+  }
+
   /** Try to aggregate unary intermediate result of one time series without group by interval. */
   @Test
   public void testAggregateIntermediateResult1()

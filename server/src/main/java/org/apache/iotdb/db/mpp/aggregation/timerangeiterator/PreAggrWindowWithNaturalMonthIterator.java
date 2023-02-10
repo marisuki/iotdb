@@ -22,6 +22,8 @@ package org.apache.iotdb.db.mpp.aggregation.timerangeiterator;
 import org.apache.iotdb.db.utils.datastructure.TimeSelector;
 import org.apache.iotdb.tsfile.read.common.TimeRange;
 
+import java.util.List;
+
 public class PreAggrWindowWithNaturalMonthIterator implements ITimeRangeIterator {
 
   private static final int HEAP_MAX_SIZE = 100;
@@ -162,5 +164,30 @@ public class PreAggrWindowWithNaturalMonthIterator implements ITimeRangeIterator
     initHeap();
 
     return tmpInterval;
+  }
+
+  @Override
+  public int getFirstRelatedWindowAsTag(long currTimestamp) {
+    return -1;
+  }
+
+  @Override
+  public int getLastRelatedWindowAsTag(long currTimestamp) {
+    return -1;
+  }
+
+  @Override
+  public List<Integer> getRelatedWindowTags(long currTimestamp) {
+    return null;
+  }
+
+  @Override
+  public long getWindowStartTimestampByTag(int windowTag) {
+    return -1;
+  }
+
+  @Override
+  public long getWindowEndTimestampByTag(int windowTag) {
+    return -1;
   }
 }

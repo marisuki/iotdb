@@ -21,6 +21,7 @@ package org.apache.iotdb.db.mpp.aggregation.slidingwindow;
 
 import org.apache.iotdb.db.mpp.aggregation.Accumulator;
 import org.apache.iotdb.db.mpp.aggregation.Aggregator;
+import org.apache.iotdb.db.mpp.aggregation.timerangeiterator.ITimeRangeIterator;
 import org.apache.iotdb.db.mpp.plan.planner.plan.parameter.AggregationStep;
 import org.apache.iotdb.db.mpp.plan.planner.plan.parameter.InputLocation;
 import org.apache.iotdb.tsfile.exception.write.UnSupportedDataTypeException;
@@ -46,6 +47,8 @@ public abstract class SlidingWindowAggregator extends Aggregator {
   protected Deque<PartialAggregationResult> deque;
 
   protected TimeRange curTimeRange;
+
+  protected ITimeRangeIterator timeRangeIterator;
 
   protected SlidingWindowAggregator(
       Accumulator accumulator, List<InputLocation[]> inputLocationList, AggregationStep step) {

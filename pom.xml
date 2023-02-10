@@ -92,7 +92,7 @@
         <module>influxdb-protocol</module>
         <module>session</module>
         <module>cli</module>
-        <module>openapi</module>
+        <!--        <module>openapi</module>-->
         <module>server</module>
         <module>example</module>
         <module>grafana-plugin</module>

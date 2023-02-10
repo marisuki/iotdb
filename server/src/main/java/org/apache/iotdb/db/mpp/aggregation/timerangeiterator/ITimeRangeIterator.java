@@ -21,6 +21,8 @@ package org.apache.iotdb.db.mpp.aggregation.timerangeiterator;
 
 import org.apache.iotdb.tsfile.read.common.TimeRange;
 
+import java.util.List;
+
 /**
  * This interface used for iteratively generating aggregated time windows in GROUP BY query.
  *
@@ -57,4 +59,55 @@ public interface ITimeRangeIterator {
   long currentOutputTime();
 
   long getTotalIntervalNum();
+
+  /**
+   * Return the first group tag of the related timestamp. Need to filter out the unsatisfied tuples:
+   * Tx > ED OR Tx < ST --> should be filtered ahead by optimizer. Only for slidingWindow: st +
+   * i*step <= currTimestamp <= st + i*step + interval; return the first group id satisfying the
+   * predicates: i. Return -1 if curr timestamp does not belong to any window Example: <--w1--> *T1
+   * <--w2-->...
+   *
+   * @param currTimestamp: the timestamp of a time-series tuple
+   * @return tag: treat tuples within a window as a group
+   */
+  int getFirstRelatedWindowAsTag(long currTimestamp);
+
+  /**
+   * Return the last group tag of the related timestamp. Need to filter out the unsatisfied tuples:
+   * Tx > ED OR Tx < ST --> should be filtered ahead by optimizer. Only for slidingWindow: st +
+   * i*step <= currTimestamp <= st + i*step + interval return the final group id satisfying the
+   * predicates: i. Return -1 if curr timestamp does not belong to any window Example: <--w1--> *T1
+   * <--w2-->...
+   *
+   * @param currTimestamp: the timestamp of a time-series tuple
+   * @return tag: treat tuples within a window as a group
+   */
+  int getLastRelatedWindowAsTag(long currTimestamp);
+
+  /**
+   * Return all group tags of the related timestamp. Need to filter out the unsatisfied tuples: Tx >
+   * ED OR Tx < ST --> should be filtered ahead by optimizer. For any window-based aggregation: st +
+   * i*step <= currTimestamp <= st + i*step + interval return all group ids satisfying the
+   * predicates: list[i]. Return emptyList if curr timestamp does not belong to any window
+   *
+   * @param currTimestamp: the timestamp of a time-series tuple
+   * @return tags: treat all tuples within a window as a group
+   */
+  List<Integer> getRelatedWindowTags(long currTimestamp);
+
+  /**
+   * Return the start timestamp of a window according to the tag (int).
+   *
+   * @param windowTag: the group id.
+   * @return timestamp(long): the start timestamp.
+   */
+  long getWindowStartTimestampByTag(int windowTag);
+
+  /**
+   * Return the end timestamp of a window according to the tag (int).
+   *
+   * @param windowTag: the group id.
+   * @return timestamp(long): the end timestamp.
+   */
+  long getWindowEndTimestampByTag(int windowTag);
 }

@@ -22,6 +22,9 @@ package org.apache.iotdb.db.mpp.aggregation.timerangeiterator;
 import org.apache.iotdb.db.utils.DateTimeUtils;
 import org.apache.iotdb.tsfile.read.common.TimeRange;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.apache.iotdb.db.utils.DateTimeUtils.MS_TO_MONTH;
 
 /**
@@ -45,6 +48,9 @@ public class AggrWindowIterator implements ITimeRangeIterator {
   private TimeRange curTimeRange;
   private boolean hasCachedTimeRange;
 
+  private final long convertedStepMS;
+  private final long convertedIntervalMS;
+
   public AggrWindowIterator(
       long startTime,
       long endTime,
@@ -62,6 +68,12 @@ public class AggrWindowIterator implements ITimeRangeIterator {
     this.isSlidingStepByMonth = isSlidingStepByMonth;
     this.isIntervalByMonth = isIntervalByMonth;
     this.leftCRightO = leftCRightO;
+
+    if (isSlidingStepByMonth) convertedStepMS = slidingStep * MS_TO_MONTH;
+    else convertedStepMS = slidingStep;
+
+    if (isIntervalByMonth) convertedIntervalMS = interval * MS_TO_MONTH;
+    else convertedIntervalMS = interval;
   }
 
   @Override
@@ -193,6 +205,54 @@ public class AggrWindowIterator implements ITimeRangeIterator {
       intervalNum = (long) Math.ceil(queryRange / (double) slidingStep);
     }
     return intervalNum;
+  }
+
+  @Override
+  public int getFirstRelatedWindowAsTag(long currTimestamp) {
+
+    int tag =
+        (int)
+            Math.floor(
+                (currTimestamp - this.startTime - convertedIntervalMS) * 1.0d / (convertedStepMS));
+
+    // check if <---*Tx-> ... or <---> *Tx <--->
+    if (startTime + tag * convertedStepMS + convertedIntervalMS >= currTimestamp) {
+      return tag;
+    } else return -1;
+  }
+
+  @Override
+  public int getLastRelatedWindowAsTag(long currTimestamp) {
+
+    int tag = (int) Math.floor((currTimestamp - this.startTime) * 1.0d / (convertedStepMS));
+
+    // check if <----w1--*Tx-> <w2>... >>> tag
+    // or <---w1--->  *Tx  <---w2---> ... >>> -1
+    if (startTime + tag * convertedStepMS + convertedIntervalMS >= currTimestamp) {
+      return tag;
+    } else return -1;
+  }
+
+  @Override
+  public List<Integer> getRelatedWindowTags(long currTimestamp) {
+    int stTag = getFirstRelatedWindowAsTag(currTimestamp);
+    int edTag = getLastRelatedWindowAsTag(currTimestamp);
+    if (stTag == -1 || edTag == -1) return new ArrayList<>();
+    else {
+      List<Integer> ans = new ArrayList<>();
+      for (int i = stTag; i <= edTag; i++) ans.add(i);
+      return ans;
+    }
+  }
+
+  @Override
+  public long getWindowStartTimestampByTag(int windowTag) {
+    return startTime + windowTag * convertedStepMS;
+  }
+
+  @Override
+  public long getWindowEndTimestampByTag(int windowTag) {
+    return startTime + windowTag * convertedStepMS + convertedIntervalMS;
   }
 
   public void reset() {
