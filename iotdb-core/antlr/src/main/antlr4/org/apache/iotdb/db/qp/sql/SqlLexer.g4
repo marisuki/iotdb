@@ -318,6 +318,10 @@ FIRST
     : F I R S T
     ;
 
+FLATTEN
+    : F L A T T E N
+    ;
+
 FLUSH
     : F L U S H
     ;

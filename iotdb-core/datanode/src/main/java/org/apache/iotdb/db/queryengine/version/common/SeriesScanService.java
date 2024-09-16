@@ -2,6 +2,7 @@ package org.apache.iotdb.db.queryengine.version.common;
 
 import org.apache.iotdb.commons.path.IFullPath;
 
+import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -11,8 +12,7 @@ public class SeriesScanService implements Runnable {
     // path is either a device.sensor path or a hashcode assigned by SeriesScanService to cache an intermediate page
     private List<IFullPath> srcPaths;
     public ConcurrentLinkedDeque<Message> msg_queue;
-    private List<SIGNAL> pathLDStatus; // has the same length as srcPaths, one map-to one
-    private
+    private List<Deque<SIGNAL>> pathLDStatus; // has the same length as srcPaths, one map-to one
 
     private SeriesScanService() {}
     public static SeriesScanService getInstance() {

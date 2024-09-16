@@ -786,6 +786,13 @@ intoItem
 // ---- From Clause
 fromClause
     : FROM prefixPath (COMMA prefixPath)*
+    | FROM prefixPath (COMMA prefixPath)* flattenByClause
+    | FROM prefixPath (COMMA prefixPath)* alignByClause
+    ;
+
+// ---- Flatten by Clause
+flattenByClause
+    : FLATTEN BY identifier
     ;
 
 // ---- Where Clause

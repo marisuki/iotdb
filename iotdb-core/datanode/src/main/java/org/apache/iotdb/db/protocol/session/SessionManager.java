@@ -111,7 +111,7 @@ public class SessionManager implements SessionManagerMBean {
         zoneId,
         tsProtocolVersion,
         clientVersion,
-        IClientSession.SqlDialect.TREE);
+        IClientSession.SqlDialect.GENERAL);
   }
 
   public BasicOpenSessionResp login(

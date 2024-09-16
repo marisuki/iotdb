@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.iotdb.db.protocol.session.IClientSession.SqlDialect.GENERAL;
 import static org.apache.iotdb.db.protocol.session.IClientSession.SqlDialect.TREE;
 
 /**
@@ -153,7 +154,7 @@ public class LocalExecutionPlanner {
     Operator root;
     IClientSession.SqlDialect sqlDialect =
         instanceContext.getSessionInfo() == null
-            ? TREE
+            ? GENERAL
             : instanceContext.getSessionInfo().getSqlDialect();
     switch (sqlDialect) {
       case TREE:
@@ -161,6 +162,9 @@ public class LocalExecutionPlanner {
         break;
       case TABLE:
         root = node.accept(new TableOperatorGenerator(metadata), context);
+        break;
+      case GENERAL:
+        root = node.accept(new GeneralPlanGenerator(), context);
         break;
       default:
         throw new IllegalArgumentException(String.format("Unknown sql dialect: %s", sqlDialect));

@@ -50,7 +50,7 @@ public abstract class IClientSession {
 
   private long logInTime;
 
-  private SqlDialect sqlDialect = SqlDialect.TREE;
+  private SqlDialect sqlDialect = SqlDialect.GENERAL;
 
   @Nullable private String databaseName;
 
@@ -165,7 +165,8 @@ public abstract class IClientSession {
 
   public enum SqlDialect {
     TREE((byte) 0),
-    TABLE((byte) 1);
+    TABLE((byte) 1),
+    GENERAL((byte) 2);
 
     private final byte dialect;
 
@@ -192,6 +193,8 @@ public abstract class IClientSession {
           return TREE;
         case 1:
           return TABLE;
+        case 2:
+          return GENERAL;
         default:
           throw new IllegalArgumentException(String.format("Unknown sql dialect: %s", b));
       }
