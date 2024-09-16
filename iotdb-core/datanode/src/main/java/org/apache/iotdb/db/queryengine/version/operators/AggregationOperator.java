@@ -1,4 +1,3 @@
 package org.apache.iotdb.db.queryengine.version.operators;
 
-public class AggregationOperator extends ActiveComputeOperator {
-}
+public class AggregationOperator extends ActiveComputeOperator {}

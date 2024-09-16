@@ -154,17 +154,15 @@ public class LocalExecutionPlanner {
     Operator root;
     IClientSession.SqlDialect sqlDialect =
         instanceContext.getSessionInfo() == null
-            ? GENERAL
+            ? TREE
             : instanceContext.getSessionInfo().getSqlDialect();
     switch (sqlDialect) {
       case TREE:
+      case GENERAL:
         root = node.accept(new OperatorTreeGenerator(), context);
         break;
       case TABLE:
         root = node.accept(new TableOperatorGenerator(metadata), context);
-        break;
-      case GENERAL:
-        root = node.accept(new GeneralPlanGenerator(), context);
         break;
       default:
         throw new IllegalArgumentException(String.format("Unknown sql dialect: %s", sqlDialect));

@@ -1,5 +1,3 @@
 package org.apache.iotdb.db.queryengine.version.common;
 
-public abstract class WritableNode {
-
-}
+public abstract class WritableNode {}

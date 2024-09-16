@@ -4,13 +4,13 @@ import org.apache.iotdb.db.queryengine.version.common.MergeTreeService;
 import org.apache.iotdb.db.queryengine.version.common.SeriesScanService;
 
 public class QueryExecutor {
-    MergeTreeService mergeTreeService;
-    SeriesScanService seriesScanService;
+  MergeTreeService mergeTreeService;
+  SeriesScanService seriesScanService;
 
-    public QueryExecutor() {
-        mergeTreeService = MergeTreeService.getInstance();
-        seriesScanService = SeriesScanService.getInstance();
-    }
+  public QueryExecutor() {
+    mergeTreeService = MergeTreeService.getInstance();
+    seriesScanService = SeriesScanService.getInstance();
+  }
 
-    public void query(String sql) {}
+  public void query(String sql) {}
 }

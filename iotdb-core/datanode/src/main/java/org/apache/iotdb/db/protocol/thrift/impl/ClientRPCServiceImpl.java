@@ -309,8 +309,8 @@ public class ClientRPCServiceImpl implements IClientRPCServiceWithHandler {
     try {
       // create and cache dataset
       ExecutionResult result;
-      if (clientSession.getSqlDialect() == IClientSession.SqlDialect.TREE ||
-              clientSession.getSqlDialect() == IClientSession.SqlDialect.GENERAL) {
+      if (clientSession.getSqlDialect() == IClientSession.SqlDialect.TREE
+          || clientSession.getSqlDialect() == IClientSession.SqlDialect.GENERAL) {
         Statement s = StatementGenerator.createStatement(statement, clientSession.getZoneId());
 
         if (s == null) {
@@ -1639,8 +1639,8 @@ public class ClientRPCServiceImpl implements IClientRPCServiceWithHandler {
         try {
           long queryId;
           ExecutionResult result;
-          if (clientSession.getSqlDialect() == IClientSession.SqlDialect.TREE ||
-                  clientSession.getSqlDialect() == IClientSession.SqlDialect.GENERAL) {
+          if (clientSession.getSqlDialect() == IClientSession.SqlDialect.TREE
+              || clientSession.getSqlDialect() == IClientSession.SqlDialect.GENERAL) {
             Statement s = StatementGenerator.createStatement(statement, clientSession.getZoneId());
             if (s == null) {
               return RpcUtils.getStatus(

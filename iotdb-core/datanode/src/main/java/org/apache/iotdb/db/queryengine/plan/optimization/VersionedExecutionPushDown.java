@@ -8,26 +8,23 @@ import org.apache.iotdb.db.queryengine.plan.statement.StatementType;
 import org.apache.iotdb.db.queryengine.plan.statement.crud.QueryStatement;
 
 public class VersionedExecutionPushDown implements PlanOptimizer {
+  @Override
+  public PlanNode optimize(PlanNode plan, Analysis analysis, MPPQueryContext context) {
+    if (analysis.getTreeStatement().getType() != StatementType.QUERY) {
+      return plan;
+    }
+    QueryStatement queryStatement = analysis.getQueryStatement();
+
+    return plan;
+  }
+
+  private static class Rewriter extends PlanVisitor<PlanNode, RewriterContext> {
+
     @Override
-    public PlanNode optimize(PlanNode plan, Analysis analysis, MPPQueryContext context) {
-        if (analysis.getTreeStatement().getType() != StatementType.QUERY) {
-            return plan;
-        }
-        QueryStatement queryStatement = analysis.getQueryStatement();
-
-        return plan;
+    public PlanNode visitPlan(PlanNode node, RewriterContext context) {
+      return null;
     }
+  }
 
-    private static class Rewriter extends PlanVisitor<PlanNode, RewriterContext> {
-
-        @Override
-        public PlanNode visitPlan(PlanNode node, RewriterContext context) {
-            return null;
-        }
-
-    }
-
-    private static class RewriterContext {
-
-    }
+  private static class RewriterContext {}
 }
