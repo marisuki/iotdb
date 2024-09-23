@@ -792,7 +792,8 @@ fromClause
 
 // ---- Flatten by Clause
 flattenByClause
-    : FLATTEN BY identifier
+    : FLATTEN ON identifier
+    | FLATTEN BY identifier
     ;
 
 // ---- Where Clause

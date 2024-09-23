@@ -80,6 +80,7 @@ import org.apache.iotdb.db.qp.sql.IoTDBSqlParser;
 import org.apache.iotdb.db.qp.sql.SqlLexer;
 import org.apache.iotdb.db.queryengine.execution.exchange.MPPDataExchangeService;
 import org.apache.iotdb.db.queryengine.execution.schedule.DriverScheduler;
+import org.apache.iotdb.db.queryengine.generalgebra.memory.MemoryManager;
 import org.apache.iotdb.db.queryengine.plan.analyze.cache.schema.DataNodeTTLCache;
 import org.apache.iotdb.db.queryengine.plan.parser.ASTVisitor;
 import org.apache.iotdb.db.queryengine.plan.parser.StatementGenerator;
@@ -716,6 +717,8 @@ public class DataNode extends ServerCommandLine implements DataNodeMBean {
     registerManager.register(StorageEngine.getInstance());
     registerManager.register(MPPDataExchangeService.getInstance());
     registerManager.register(DriverScheduler.getInstance());
+    registerManager.register(MemoryManager.getInstance());
+    registerManager.register(SeriesScanService.getInstance());
 
     registerUdfServices();
 
@@ -1104,6 +1107,8 @@ public class DataNode extends ServerCommandLine implements DataNodeMBean {
       Class.forName(LogicalQueryPlan.class.getName());
       // TsFileProcessor
       Class.forName(TsFileProcessor.class.getName());
+      // QueryBuffer
+//      Class.forName(SeriesScanService.class.getName());
     } catch (ClassNotFoundException e) {
       logger.error("load class error: ", e);
     }

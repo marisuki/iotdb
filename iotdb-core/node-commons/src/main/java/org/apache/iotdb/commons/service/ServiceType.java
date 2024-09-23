@@ -51,6 +51,8 @@ public enum ServiceType {
       "CACHE_HIT_RATIO_DISPLAY_SERVICE",
       generateJmxName("org.apache.iotdb.service", "Cache Hit Ratio")),
   QUERY_TIME_MANAGER("Query time manager", "Query time"),
+  QUERY_MEMORY_MANAGER("Query runtime memory control service", "QMemoryManager"),
+  QUERY_SERIES_SCAN_SERVICE("Query (Intermediate/src) data scan service", "QSeriesScanService"),
 
   FLUSH_SERVICE(
       "Flush ServerService",

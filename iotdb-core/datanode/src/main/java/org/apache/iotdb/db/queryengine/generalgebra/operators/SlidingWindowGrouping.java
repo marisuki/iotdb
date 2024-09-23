@@ -1,3 +1,3 @@
-package org.apache.iotdb.db.queryengine.version.operators;
+package org.apache.iotdb.db.queryengine.generalgebra.operators;
 
 public class SlidingWindowGrouping extends LazyComputeOperator {}

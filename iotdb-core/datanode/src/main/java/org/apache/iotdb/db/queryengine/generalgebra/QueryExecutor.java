@@ -1,7 +1,4 @@
-package org.apache.iotdb.db.queryengine.version;
-
-import org.apache.iotdb.db.queryengine.version.common.MergeTreeService;
-import org.apache.iotdb.db.queryengine.version.common.SeriesScanService;
+package org.apache.iotdb.db.queryengine.generalgebra;
 
 public class QueryExecutor {
   MergeTreeService mergeTreeService;
